@@ -37,13 +37,21 @@ Note that if retriggered while the output is high, the pulse width counter is re
 With the **mode+** knob above 50% the **multigrain** acts as a modified version of Janne G:son Berg's *grainsring* (available for download on the Grains product page).
 
 * **Knob 1** : (above 50%) bits to output (8 - 1)
-* **Knob 2** : "Chance": probability for the next new bit to be a 1
-* **Knob 3** : "Change": probability that the next new bit will be shifted into the bit sequence
+* **Knob 2** : "Change": probability that the next new bit will be shifted into the bit sequence
+* **Knob 3** : "Chance": probability for the next new bit to be a 1
 * **IN 3** : trigger input
 
 The basic idea is that there's a 16-bit value that is being circularly bit shifted at each step (input trigger). During each shift, there is a chance (set by **Change**) that a new bit will be shifted in instead of the previous top bit. **Chance** sets the probability that the new bit will be a 1.
 
-At each trigger, after the bits are shifted, the 8-bit output CV is set to the value of the lowest **N** bits of the bit array, where **N** is set by the **mode+** knob. With **mode+** at 50% the output will be the full 8 bits, which will remain an analog value down to 2 bits. When **mode+** is fully CW, the 1 bit output will be scaled to a full-swing gate (based on Janne's addition in Grainsring).
+At each trigger, after the bits are shifted, the 8-bit output CV is set to the value of the lowest bytes of the bit array. The **mode+** knob controls the quantization of the output voltage, selecting from the options:
+
+* No quantization
+* Quantize to semitones
+* Quantize to Major scale
+* Quantize to Minor scale
+* Quantize to Mixolydian scale
+
+Note that the quantization isn't at all calibrated - all scales are relative to a root of 0V. It's also assumed that the 0-5V output is being used directly. If the output CV is being amplified you'd need to recalculate the lookup tables.
 
 
 ## Installing
