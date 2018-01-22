@@ -35,7 +35,7 @@ extern "C" {
 #define LED_BIT       5
 
 
-#define SAMPLE_AVG_LEN 4 ///< Moving average length for analog input sampling:
+#define SAMPLE_AVG_LEN 8 ///< Moving average length for analog input sampling:
 
 
 /**
@@ -57,6 +57,8 @@ extern const uint16_t expTable[];
 extern const uint16_t logTable[];
 extern const uint16_t semitoneTable[];
 extern const uint16_t majorTable[];
+extern const uint16_t minorTable[];
+extern const uint16_t mixolydianTable[];
 
 /**
  * Convert CV ADC value to frequency
@@ -88,6 +90,14 @@ inline uint16_t mapSemitone(uint16_t input) {
 }
 
 inline uint16_t mapMajor(uint16_t input) {
+  return pgm_read_word_near(majorTable + input);
+}
+
+inline uint16_t mapMinor(uint16_t input) {
+  return pgm_read_word_near(majorTable + input);
+}
+
+inline uint16_t mapMixolydian(uint16_t input) {
   return pgm_read_word_near(majorTable + input);
 }
 

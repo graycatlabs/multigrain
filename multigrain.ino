@@ -260,19 +260,22 @@ static inline void tickTtoG() {
 
 // Initial value from grainsring:
 static uint16_t sg_noise_ring_bit_array = 0x8080;
-static uint8_t sg_noise_ring_bits_to_write = 1;
+static uint8_t sg_noise_ring_bits_to_write = 8;
+static uint8_t sg_noise_ring_scale = 0;
 
 void runNoiseRing() {
   uint16_t new_bits;
   uint8_t change, chance, next_value;
   static avg_t bits_avg;
-  uint16_t bits;
+  uint16_t scale;
 
   // Read the mode knob:
-  bits = sampleAveraged(MODE_KNOB, &bits_avg);
-  bits = constrain(bits, 512, 1000);
-  
-  sg_noise_ring_bits_to_write = map(bits, 512, 1000, 8, 1);
+  scale = sampleAveraged(MODE_KNOB, &bits_avg);
+  scale = constrain(scale, 512, 1000);
+
+  // 5 possilbe scales:
+  sg_noise_ring_scale = map(scale, 512, 1000, 0, 4);
+
   
   // Probabilities based on knob values
   change = analogRead(KNOB_2) > random(1024);
@@ -287,22 +290,51 @@ void runNoiseRing() {
       }
       bitWrite(new_bits, 0, next_value);
       sg_noise_ring_bit_array = new_bits;
+      
       digitalWrite(LED_PIN, new_bits & 0x1);
     }
 }
 
 static inline void tickNoiseRing() {
-  uint8_t mask = 0xff;
+  uint8_t mask = 0xff, value;
   if (sg_noise_ring_bits_to_write == 1) {
+    // Currently disabled
     sg_pwm_value = (sg_noise_ring_bit_array & 0x1) * 0xff;
   }
   else {
     mask >>= 8 - sg_noise_ring_bits_to_write;
-    sg_pwm_value = mapMajor(sg_noise_ring_bit_array & mask);
+    value = sg_noise_ring_bit_array & mask;
+    
+    switch(sg_noise_ring_scale) {
+    case 1:
+      // Quantize to semitones
+      sg_pwm_value = mapSemitone(value);
+      break;
+    case 2:
+      // Quantize to major scale
+      sg_pwm_value = mapMajor(value);
+      break;
+    case 3:
+      // Quantize to minor scale
+      sg_pwm_value = mapMinor(value);
+      break;
+    case 4:
+      // Quantize to mixolydian scale
+      sg_pwm_value = mapMixolydian(value);
+      break;
+
+    case 0:
+    default:
+      // No quantization
+      sg_pwm_value = value;
+      break;
+    
+    }
   }
 }
 
 //===============================================
+
 
 
 // PWM ISR
