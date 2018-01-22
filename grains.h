@@ -55,6 +55,8 @@ inline void setPwm(uint8_t value) {
 extern const uint16_t freqTable[];
 extern const uint16_t expTable[];
 extern const uint16_t logTable[];
+extern const uint16_t semitoneTable[];
+extern const uint16_t majorTable[];
 
 /**
  * Convert CV ADC value to frequency
@@ -79,6 +81,14 @@ inline uint16_t mapExp(uint16_t input) {
 */
 inline uint16_t mapLog(uint16_t input) {
   return pgm_read_word_near(logTable + input);
+}
+
+inline uint16_t mapSemitone(uint16_t input) {
+  return pgm_read_word_near(semitoneTable + input);
+}
+
+inline uint16_t mapMajor(uint16_t input) {
+  return pgm_read_word_near(majorTable + input);
 }
 
 /**

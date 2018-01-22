@@ -298,7 +298,7 @@ static inline void tickNoiseRing() {
   }
   else {
     mask >>= 8 - sg_noise_ring_bits_to_write;
-    sg_pwm_value = sg_noise_ring_bit_array & mask;
+    sg_pwm_value = mapMajor(sg_noise_ring_bit_array & mask);
   }
 }
 
