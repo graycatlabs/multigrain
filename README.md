@@ -57,7 +57,7 @@ Grains was originally intended to output audio, not control voltages/gates, so f
 
 ### Short C6
 
-**C6** (10uF electrolytic) AC couples the PWM output to the *OUT* jack. We want DC coupling to output voltages, so just solder a wire across it.
+**C6** (10uF electrolytic) AC couples the PWM output to the **OUT** jack. We want DC coupling to output voltages, so just solder a wire across it.
 
 ### Output RC filter
 
@@ -65,7 +65,7 @@ The "analog" output is generated using a PWM signal at 31.25kHz. For a cleaner v
 
 ### Optional: Mix DC input
 
-The maximum voltage the Grains can output is 5V. If you're using the Grains in conjunction with a Ginkosynthese Mix, you can modify it to have a DC coupled input by simply shorting one of the input caps (the big red ones). I shorted my IN1 cap, so channel one is now dedicated to boosting the Grains CV output from 0-5V to 0-10V. And hen not using grains I can still use the Mix as a 2-channel audio mixer/amp.
+The maximum voltage the Grains can output is 5V. If you're using the Grains in conjunction with a Ginkosynthese Mix, you can modify it to have a DC coupled input by simply shorting one of the input caps (the big red ones). I shorted my IN1 cap, so channel one is now dedicated to boosting the Grains CV output from 0-5V to 0-10V. And when not using grains I can still use the Mix as a 2-channel audio mixer/amp.
 
 ## Credit
 
